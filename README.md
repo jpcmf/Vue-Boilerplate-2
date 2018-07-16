@@ -1,3 +1,6 @@
+# Vue-Boilerplate-2
+> A boilerplate of Vue.js project from Alura Course
+
 ## Install Vue CLI
 ```
 npm  i -g vue-cli@2.7.0
@@ -6,10 +9,6 @@ npm  i -g vue-cli@2.7.0
 ```
 vue init webpack-simple [project-name]
 ```
-
-# alura-vue
-
-> A Vue.js project
 
 ## Build Setup
 
@@ -25,4 +24,3 @@ npm run build
 ```
 
 For detailed explanation on how things work, consult the [docs for vue-loader](http://vuejs.github.io/vue-loader).
-# Vue-Boilerplate-2
