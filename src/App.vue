@@ -1,5 +1,5 @@
 <template>
-  <div class="container">
+  <div class="container-fluid">
     <my-menu :rotas="routes"/>
     <transition name="page">
       <router-view></router-view>
@@ -26,6 +26,7 @@ export default {
 
 <style lang="scss">
   @import url('https://fonts.googleapis.com/css?family=Varela+Round');
+  @import '../node_modules/bootstrap/scss/bootstrap.scss';
 
   .container {
     font-family: 'Varela Round', Helvetica, Arial, sans-serif;

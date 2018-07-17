@@ -3,12 +3,16 @@
     <h1 class="centered">Cadastro</h1>
     <h2 class="centered">{{ foto.titulo }}</h2>
 
+    <h3 v-if="foto._id" class="centered">Modify</h3>
+    <h3 v-else class="centered">Add</h3>
+
     <form @submit.prevent="record()">
       <div class="form-group">
         <label for="titulo">TÍTULO</label>
         <!-- <input id="titulo" autocomplete="off"
           @input="foto.titulo = $event.target.value" :value="foto.titulo"> -->
-        <input id="titulo" autocomplete="off" v-model.lazy="foto.titulo">
+        <input name="titulo" v-validate data-vv-rules="required" id="titulo" autocomplete="off" v-model.lazy="foto.titulo">
+        <span v-show="errors.has('titulo')">required field</span>
       </div>
 
       <div class="form-group">
@@ -45,7 +49,8 @@ export default {
 
   data() {
     return {
-      foto: new Pic()
+      foto: new Pic(),
+      id: this.$route.params.id
 
       // foto: {
       //   titulo: '',
@@ -61,7 +66,10 @@ export default {
 
       this.service
         .register(this.foto)
-        .then(() => this.foto = new Pic(), err => console.log(err))
+        .then(() => {
+          if (this.id) this.$router.push({name: 'home'})
+          this.foto = new Pic()
+        }, err => console.log(err))
 
       // this.resource
       //   .save(this.foto)
@@ -84,6 +92,12 @@ export default {
   created() {
     this.service = new PicService(this.$resource)
     // this.resource = this.$resource('v1/fotos')
+
+    if (this.id) {
+      this.service
+        .search(this.id)
+        .then(foto => this.foto = foto)
+    }
   }
 }
 </script>

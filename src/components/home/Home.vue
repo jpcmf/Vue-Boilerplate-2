@@ -1,7 +1,11 @@
 <template lang="html">
   <div>
-    <h1 class="title">{{ title }}</h1>
-    <p v-show="message" class="centered">{{ message }}</p>
+    <div class="py-5 text-center">
+      <h1 class="title">{{ title }}</h1>
+      <div v-show="messages" class="alert alert-dark" role="alert">
+        <p class="centered">{{ messages }}</p>
+      </div>
+    </div>
 
     <!-- <div class="">
       {{objects}}
@@ -18,11 +22,32 @@
       </li>
     </ul> -->
 
-    <ul class="pics">
+    <div class="py-5">
+      <div class="row">
+        <div class="col-xs-12 col-md-3" v-for="foto of fotosFiltered">
+          <my-panel :titulo="foto.titulo">
+            <img-responsive v-my-transform:scale.animate="1.5" :url="foto.url" :titulo="foto.titulo"/>
+            <router-link :to="{ name: 'change', params: {id: foto._id} }">
+              <my-button type="button" label="alterar"/>
+            </router-link>
+            <my-button
+              type="button"
+              label="remover"
+              @buttonActive="remove(foto)"
+              :confirm="true"
+              stylecss="danger"/>
+          </my-panel>
+        </div>
+      </div>
+    </div>
+
+    <ul class="pics" style="display: none;">
       <li class="pics__item" v-for="foto of fotosFiltered">
         <my-panel :titulo="foto.titulo">
           <img-responsive v-my-transform:scale.animate="1.5" :url="foto.url" :titulo="foto.titulo"/>
-          <my-button type="button" label="alterar"/>
+          <router-link :to="{ name: 'change', params: {id: foto._id} }">
+            <my-button type="button" label="alterar"/>
+          </router-link>
           <my-button
             type="button"
             label="remover"
@@ -66,10 +91,10 @@ export default {
 
   data() {
     return {
-      title: 'Compacto Records',
+      title: 'Releases',
       fotos: [],
       filter: '',
-      message: '',
+      messages: '',
 
       // outra api
       objects: []
@@ -117,11 +142,12 @@ export default {
           let index = this.fotos.indexOf(foto) // position of pic in array
           this.fotos.splice(index, 1) // the instruction change array
           console.log(index);
-          this.message = 'Picture removed'
+          this.messages = 'Picture removed'
         },
         err => {
-          this.message = 'Can not remove the picture'
+          // this.messages = 'Can not remove the picture'
           console.log(err);
+          this.messages = err.message
         })
 
       // this.resource
@@ -157,7 +183,9 @@ export default {
     this.service = new PicService(this.$resource)
     this.service
       .list()
-      .then(fotos => this.fotos = fotos, err => console.log(err))
+      .then(fotos => this.fotos = fotos, err => {
+        this.messages = err.message
+      })
 
     // this.resource = this.$resource('v1/fotos{/id}')
     // this.resource
