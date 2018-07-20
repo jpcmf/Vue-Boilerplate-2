@@ -1,5 +1,7 @@
-import Register from './components/register/Register.vue'
+// import Register from './components/register/Register.vue'
+const Register = () => System.import('./components/register/Register.vue').then(m => m.default)
 import Home from './components/home/Home.vue'
+// const Home = () => import('./components/home/Home.vue')
 
 export const routes = [
   { path: '', name: 'home', component: Home, title: 'Home', menu: true},

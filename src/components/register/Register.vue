@@ -11,19 +11,21 @@
         <label for="titulo">TÍTULO</label>
         <!-- <input id="titulo" autocomplete="off"
           @input="foto.titulo = $event.target.value" :value="foto.titulo"> -->
-        <input name="titulo" v-validate data-vv-rules="required" id="titulo" autocomplete="off" v-model.lazy="foto.titulo">
-        <span v-show="errors.has('titulo')">required field</span>
+        <input class="form-control" name="titulo" v-model="foto.titulo" v-validate data-vv-rules="required|min:3|max:30" data-vv-as="título"  id="titulo" autocomplete="off">
+        <span class="error" v-show="errors.has('titulo')">{{ errors.first('titulo') }}</span>
       </div>
 
       <div class="form-group">
         <label for="url">URL</label>
-        <input id="url" autocomplete="off" v-model.lazy="foto.url">
+        <!-- <input id="url" autocomplete="off" v-model.lazy="foto.url"> -->
+        <input class="form-control" name="url" v-model="foto.url" v-validate data-vv-rules="required" id="url" autocomplete="off">
+        <span class="error" v-show="errors.has('url')">{{ errors.first('url') }}</span>
         <img-responsive v-show="foto.url" :url="foto.url" :titulo="foto.titulo"/>
       </div>
 
       <div class="form-group">
         <label for="descricao">DESCRIÇÃO</label>
-        <textarea id="descricao" autocomplete="off" v-model="foto.descricao">
+        <textarea class="form-control" id="descricao" autocomplete="off" v-model="foto.descricao">
         </textarea>
       </div>
 
@@ -64,12 +66,21 @@ export default {
   methods: {
     record() {
 
-      this.service
-        .register(this.foto)
-        .then(() => {
-          if (this.id) this.$router.push({name: 'home'})
-          this.foto = new Pic()
-        }, err => console.log(err))
+      this.$validator
+        .validateAll()
+        .then(success => {
+
+          if (success) {
+            this.service
+              .register(this.foto)
+              .then(() => {
+                if (this.id) this.$router.push({name: 'home'})
+                this.foto = new Pic()
+                this.$validator.reset()
+              }, err => console.log(err))
+          }
+
+        })
 
       // this.resource
       //   .save(this.foto)
@@ -126,6 +137,11 @@ export default {
 
   .centered {
     text-align: center;
+  }
+
+  .error {
+    color: coral;
+    font-size: 12px;
   }
 
 </style>

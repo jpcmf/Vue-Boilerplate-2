@@ -11,7 +11,7 @@
       {{objects}}
     </div> -->
 
-    <input type="search" class="filter" v-on:input="filter = $event.target.value" placeholder="Filter">
+    <input  type="search" class="form-control filter" v-on:input="filter = $event.target.value" placeholder="Filter">
 
     <!-- <ul>
       <li v-for="object of objectsFiltered">

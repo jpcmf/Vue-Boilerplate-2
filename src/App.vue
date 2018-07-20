@@ -26,6 +26,7 @@ export default {
 
 <style lang="scss">
   @import url('https://fonts.googleapis.com/css?family=Varela+Round');
+  @import './assets/sass/variables.scss';
   @import '../node_modules/bootstrap/scss/bootstrap.scss';
 
   .container {
